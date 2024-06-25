@@ -1,0 +1,70 @@
+version: "3.9"
+
+networks:
+  inception-network:
+    name: inception-network
+    driver: bridge
+
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      device: /home/pviegas/data/mariadb
+      o: bind                 # Opção para bind mounts
+      type: none              # Tipo do volume (nenhum)
+
+  wordpress:
+    driver: local             # Usa o driver local para o volume
+    driver_opts:
+      device: /home/pviegas/data/wordpress
+      o: bind                 # Opção para bind mounts
+      type: none              # Tipo do volume (nenhum)
+
+services:
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    image: mariadb:bullseye
+    env_file:
+      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception-network
+    restart: unless-stopped
+    healthcheck:
+      test: "mysql $MYSQL_DATABASE -uroot -p$MYSQL_ROOT_PASSWORD -e 'SELECT 1;'"
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx:bullseye
+    volumes:
+      - wordpress:/var/www/html:ro
+    networks:
+      - inception-network
+    ports:
+      - "443:443"                    # Mapeamento de portas do host para o contêiner>
+    depends_on:
+      - wordpress
+    restart: on-failure
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    image: wordpress:bullseye
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception-network
+    ports:
+      - "9000:9000"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: on-failure
