@@ -11,7 +11,6 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \
     php-curl	\
     php-fpm	\
     php-mysql	\
-#    wget	\
     curl
 
 # Install wp-cli (wordpress-client)

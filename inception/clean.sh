@@ -27,3 +27,5 @@ echo ""
 # removes all Docker networks silently, suppressing error messages
 echo "docker network rm $(docker network ls -q) 2>/dev/null"
 docker network rm $(docker network ls -q) 2>/dev/null
+
+make fclean

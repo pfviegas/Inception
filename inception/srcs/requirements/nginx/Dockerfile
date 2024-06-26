@@ -9,8 +9,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     nginx \
     openssl
 
-# nginx SSL
-RUN mkdir /etc/nginx/ssl
+RUN mkdir -p /etc/nginx/ssl
 
 # Gera um certificado SSL autoassinado
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \

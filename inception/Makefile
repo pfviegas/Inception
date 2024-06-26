@@ -1,12 +1,3 @@
-# Containers Names
-MARIADB		= mariadb
-NGINX		= nginx
-WORDPRESS	= wordpress
-
-# Docker Compose
-COMPOSE		= docker-compose -f srcs/docker-compose.yml
-DOCKER		= docker
-
 include srcs/.env
 
 .SILENT:

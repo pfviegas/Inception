@@ -10,15 +10,15 @@ volumes:
     driver: local
     driver_opts:
       device: /home/pviegas/data/mariadb
-      o: bind                 # Opção para bind mounts
-      type: none              # Tipo do volume (nenhum)
+      o: bind
+      type: none
 
   wordpress:
-    driver: local             # Usa o driver local para o volume
+    driver: local
     driver_opts:
       device: /home/pviegas/data/wordpress
-      o: bind                 # Opção para bind mounts
-      type: none              # Tipo do volume (nenhum)
+      o: bind
+      type: none
 
 services:
   mariadb:
@@ -47,7 +47,7 @@ services:
     networks:
       - inception-network
     ports:
-      - "443:443"                    # Mapeamento de portas do host para o contêiner>
+      - "443:443"
     depends_on:
       - wordpress
     restart: on-failure

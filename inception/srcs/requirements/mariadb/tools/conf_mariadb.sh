@@ -8,7 +8,14 @@ if [ ! -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then
     # Wait for the service to start
     sleep 2
 
-    # Run mysql_secure_installation with heredoc to input the answers
+    # Run mysql_secure_installation with heredoc to input the following answers:
+    # Change the root password? [Y/n]
+    # New password:
+    # Re-enter new password:
+    # Remove anonymous users? [Y/n]
+    # Disallow root login remotely? [Y/n]
+    # Remove test database and access to it? [Y/n]
+    # Reload privilege tables now? [Y/n]
     mysql_secure_installation << EOF
 Y
 $MYSQL_ROOT_PASSWORD
@@ -18,7 +25,6 @@ Y
 Y
 Y
 EOF
-
     # Wait to apply the changes
     sleep 1
 
@@ -38,9 +44,6 @@ else
     sleep 2
     echo "Database already exists."
 fi
-
-# Wait for the service to start
-sleep 2
 
 echo "Mariadb ready..."
 
